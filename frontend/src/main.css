@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import "@xterm/xterm/css/xterm.css";
+
+@plugin 'tailwind-scrollbar' {
+	/* biome-ignore lint/correctness/noUnknownProperty: tailwind-scrollbar custom prop */
+	nocompatible: true;
+}
+
+@plugin "daisyui" {
+	/* biome-ignore lint/correctness/noUnknownProperty: daisyui custom prop */
+	themes: all;
+}
+
+.title-bar {
+	-webkit-app-region: drag;
+
+	.window-buttons {
+		-webkit-app-region: no-drag;
+	}
+}
+
+/* Utility class for active theme button styling */
+.theme-btn-active {
+	/* Uses Tailwind/DaisyUI theme tokens */
+	@apply bg-primary text-primary-content;
+}
+
+.xterm-viewport {
+	@apply scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-box;
+}

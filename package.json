@@ -1,0 +1,8 @@
+{
+	"name": "workspace",
+	"private": true,
+	"workspaces": ["example/*", "frontend", "npm"],
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4"
+	}
+}

@@ -1,0 +1,21 @@
+name: My Workspace
+services:
+  - name: API Server
+    wdir: ./example/api
+    prog: go
+    args:
+      - run
+      - main.go
+
+  - name: Queue Worker
+    wdir: ./example/queue
+    prog: node
+    args:
+      - worker.js
+
+  - name: Web App
+    wdir: ./example/web
+    prog: npm
+    args:
+      - run
+      - dev
