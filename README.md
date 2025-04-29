@@ -1,6 +1,6 @@
 # 🆁🆄🅽🆉
 
-***This is a work in progress***
+# ⏳ ***This is a work in progress***
 
 **Runz** is a simple utility designed to help developers run multiple commands simultaneously, simplifying workflows for applications that depend on several services or scripts running in parallel.
 
