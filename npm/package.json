@@ -1,5 +1,5 @@
 {
-	"name": "runz",
+	"name": "@pillbugin/runz",
 	"version": "0.1.0",
 	"description": "Run all your dev commands at once — with tabs and combined logs.",
 	"bin": {

@@ -1,6 +1,7 @@
 # 🆁🆄🅽🆉
 
-⏳ **WIP**: Currently, only macOS is supported.
+
+# ⏳ ***This is a work in progress, and only tested on macOS.***\
 
 
 **Runz** is a simple utility designed to help developers run multiple commands simultaneously, simplifying workflows for applications that depend on several services or scripts running in parallel.
@@ -22,18 +23,6 @@ It opens a window with multiple tabs — one for each command — plus a dedicat
 ---
 
 ## Installing 🧪
-
-### Using npx, pnpx, bunx...
-
-You can use Runz directly with `npx` or a similar tool (no installation required):
-
-```sh
-npx runz
-```
-
-### Pré-built Executables 💾
-
-You can also download prebuilt executables to use Runz without using Node.js. Visit the [Releases](https://github.com/pillbugin/runz/releases) section of this repository to get the latest version for your OS.
 
 ### Build from Source 🛠️
 

@@ -1,5 +1,7 @@
 const os = require('os');
+const fs = require('fs');
 const path = require('path');
+const { spawn } = require('child_process');
 const pkg = require('./package.json');
 
 const plat = os.platform();
@@ -9,9 +11,9 @@ const name = `runz-${plat}-${arch}-v${ver}`;
 const binary = path.join(__dirname, 'binary', name);
 
 if (!fs.existsSync(binary)) {
-	fs.removeSync(path.join(__dirname, 'binary'), { recursive: true, force: true });
+	fs.rmSync(path.join(__dirname, 'binary'), { recursive: true, force: true });
 	fs.mkdirSync(path.join(__dirname, 'binary'));
-	const download = require('download');
+	const download = require('./download.js');
 	download();
 }
 
