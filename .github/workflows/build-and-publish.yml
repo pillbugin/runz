@@ -14,18 +14,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
+          bun-version: latest
 
-      - name: Install dependencies
+      - name: Install dependencies with Bun
         working-directory: ./frontend
-        run: npm ci
+        run: bun install --frozen-lockfile
 
-      - name: Build frontend
+      - name: Build frontend with Bun
         working-directory: ./frontend
-        run: npm run build
+        run: bun run build
 
       - name: Upload frontend build
         uses: actions/upload-artifact@v4
@@ -103,7 +103,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: runz-${{ matrix.title }}
-          path: target/${{ matrix.target }}/release/runz
+          path: target/${{ matrix.target }}/release/runz-${{ matrix.title }}-${{ github.ref_name }}
 
   publish:
     name: Publish to npm
@@ -114,14 +114,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js for publishing
+      - name: Setup Node.js for npm auth
         uses: actions/setup-node@v3
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Publish to npm
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Publish with Bun
         working-directory: ./npm
-        run: npm publish --access=public
+        run: bun publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
