@@ -17,6 +17,7 @@
 		"colorjs.io": "^0.5.2",
 		"lucide-react": "^0.488.0",
 		"mitt": "^3.0.1",
+		"radashi": "^12.5.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-use": "^17.6.0",

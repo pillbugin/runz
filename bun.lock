@@ -37,6 +37,7 @@
         "colorjs.io": "^0.5.2",
         "lucide-react": "^0.488.0",
         "mitt": "^3.0.1",
+        "radashi": "^12.5.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-use": "^17.6.0",
@@ -429,6 +430,8 @@
     "postcss": ["postcss@8.5.3", "", { "dependencies": { "nanoid": "^3.3.8", "picocolors": "^1.1.1", "source-map-js": "^1.2.1" } }, "sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A=="],
 
     "prism-react-renderer": ["prism-react-renderer@2.4.1", "", { "dependencies": { "@types/prismjs": "^1.26.0", "clsx": "^2.0.0" }, "peerDependencies": { "react": ">=16.0.0" } }, "sha512-ey8Ls/+Di31eqzUxC46h8MksNuGx/n0AAC8uKpwFau4RPDYLuE3EXTp8N8G2vX2N7UC/+IXeNUnlWBGGcAG+Ig=="],
+
+    "radashi": ["radashi@12.5.0", "", {}, "sha512-AIw8d3OsrWLywyusAgSx4FYR1gPJXvgB82LUphNBPNuEJ/4JH/L4uqQjWdZOqy3frOdOX6tFLumHCfCIS/yPfg=="],
 
     "react": ["react@19.1.0", "", {}, "sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg=="],
 
