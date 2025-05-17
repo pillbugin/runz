@@ -1,6 +1,7 @@
 # 🆁🆄🅽🆉
 
-# ⏳ ***This is a work in progress***
+⏳ **WIP**: Currently, only macOS is supported.
+
 
 **Runz** is a simple utility designed to help developers run multiple commands simultaneously, simplifying workflows for applications that depend on several services or scripts running in parallel.
 
