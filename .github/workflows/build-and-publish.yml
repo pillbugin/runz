@@ -1,0 +1,127 @@
+name: Build and Publish
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build-frontend:
+    name: Build Web Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: ./frontend/dist
+
+  build-binary:
+    name: Build ${{ matrix.name }} binary
+    needs: build-frontend
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - name: macOS x64 (macos-13)
+            runner: macos-13
+            target: x86_64-apple-darwin
+            title: darwin-x64
+
+          - name: macOS ARM (macos-latest)
+            runner: macos-latest
+            target: aarch64-apple-darwin
+            title: darwin-arm64
+
+          - name: Windows x64
+            runner: windows-latest
+            target: x86_64-pc-windows-msvc
+            title: windows-x64
+
+          - name: Windows ARM (cross)
+            runner: windows-latest
+            target: aarch64-pc-windows-msvc
+            title: windows-arm64
+
+          - name: Linux x64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            title: linux-x64
+
+          - name: Linux ARM (cross)
+            runner: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            title: linux-arm64
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download frontend build
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: ./frontend/dist
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+
+      - name: Install Linux cross-compilation deps
+        if: runner.os == 'Linux' && matrix.target == 'aarch64-unknown-linux-gnu'
+        run: sudo apt-get update && sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Build Rust app
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Rename binary
+        run: |
+          mkdir -p target/${{ matrix.target }}/release
+          mv target/${{ matrix.target }}/release/runz target/${{ matrix.target }}/release/runz-${{ matrix.title }}-${{ github.ref_name }}
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: runz-${{ matrix.title }}
+          path: target/${{ matrix.target }}/release/runz
+
+  publish:
+    name: Publish to npm
+    needs: build-binary
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js for publishing
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Publish to npm
+        working-directory: ./npm
+        run: npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

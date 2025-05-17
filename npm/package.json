@@ -1,0 +1,34 @@
+{
+	"name": "runz",
+	"version": "0.1.0",
+	"description": "Run all your dev commands at once — with tabs and combined logs.",
+	"bin": {
+		"runz": "./bin.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/pillbugin/runz.git"
+	},
+	"keywords": [
+		"dev",
+		"command",
+		"developer",
+		"development",
+		"desktop",
+		"rust",
+		"typescript",
+		"react",
+		"xterm",
+		"wry",
+		"tao",
+		"portable-pty",
+		"multiple",
+		"commands",
+		"environment"
+	],
+	"author": {
+		"name": "Jose Milton de Morais Junior",
+		"email": "josemjunior17@gmail.com"
+	},
+	"license": "MIT"
+}
