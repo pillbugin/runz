@@ -38,14 +38,15 @@ jobs:
     needs: build-frontend
     runs-on: ${{ matrix.runner }}
     strategy:
+      fail-fast: false
       matrix:
         include:
-          - name: macOS x64 (macos-13)
+          - name: macOS x64
             runner: macos-13
             target: x86_64-apple-darwin
             title: darwin-x64
 
-          - name: macOS ARM (macos-latest)
+          - name: macOS ARM
             runner: macos-latest
             target: aarch64-apple-darwin
             title: darwin-arm64
@@ -53,21 +54,21 @@ jobs:
           - name: Windows x64
             runner: windows-latest
             target: x86_64-pc-windows-msvc
-            title: windows-x64
+            title: win32-x64
 
-          - name: Windows ARM (cross)
+          - name: Windows ARM
             runner: windows-latest
             target: aarch64-pc-windows-msvc
-            title: windows-arm64
+            title: win32-arm64
 
           - name: Linux x64
             runner: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
+            target: x86_64-unknown-linux-musl
             title: linux-x64
 
-          - name: Linux ARM (cross)
+          - name: Linux ARM
             runner: ubuntu-latest
-            target: aarch64-unknown-linux-gnu
+            target: aarch64-unknown-linux-musl
             title: linux-arm64
 
     steps:
@@ -80,19 +81,13 @@ jobs:
           name: frontend-dist
           path: ./frontend/dist
 
-      - name: Setup Rust
-        uses: actions-rs/toolchain@v1
+      - name: Build binary
+        uses: houseabsolute/actions-rust-cross@v1
         with:
-          toolchain: stable
+          command: build
+          args: "--locked --release"
           target: ${{ matrix.target }}
-          override: true
-
-      - name: Install Linux deps
-        if: runner.os == 'Linux' && matrix.target == 'aarch64-unknown-linux-gnu'
-        run: sudo apt-get update && sudo apt-get install -y libglib2.0-dev pkg-config gcc-aarch64-linux-gnu
-
-      - name: Build Rust app
-        run: cargo build --release --target ${{ matrix.target }}
+          strip: true
 
       - name: Rename binary
         run: |
@@ -102,7 +97,7 @@ jobs:
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: runz-${{ matrix.title }}
+          name: runz-${{ matrix.title }}-${{ github.ref_name }}
           path: target/${{ matrix.target }}/release/runz-${{ matrix.title }}-${{ github.ref_name }}
 
   publish:
@@ -114,19 +109,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js for npm auth
+      - name: Setup Node.js for npm publish
         uses: actions/setup-node@v3
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Publish with Bun
+      - name: Publish with npm
         working-directory: ./npm
-        run: bun publish --access=public
+        run: npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
